@@ -22,8 +22,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import org.osmdroid.config.Configuration
-import org.osmdroid.library.BuildConfig
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.tileprovider.tilesource.XYTileSource
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -78,6 +76,7 @@ class AlertaActivity : AppCompatActivity() {
         val puntoPerezGamboa = GeoPoint(-18.038576240779836, -70.24918121126326)
         val markerPerezGamboa = Marker(map).apply {
             position = puntoPerezGamboa
+            //icon = ContextCompat.getDrawable(this@AlertaActivity, R.drawable.ic_marcador_custom)
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             title = "Plaza Eduardo Pérez Gamboa"
             snippet = "Zona de encuentro / Gregorio Albarracín"
