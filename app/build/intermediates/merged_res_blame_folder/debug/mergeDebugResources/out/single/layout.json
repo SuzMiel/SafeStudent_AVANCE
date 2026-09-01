@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.safestudent.app-mergeDebugResources-40:/layout/activity_alerta.xml",
+        "source": "com.example.safestudent.app-main-43:/layout/activity_alerta.xml"
+    },
+    {
+        "merged": "com.example.safestudent.app-mergeDebugResources-40:/layout/activity_main.xml",
+        "source": "com.example.safestudent.app-main-43:/layout/activity_main.xml"
+    }
+]

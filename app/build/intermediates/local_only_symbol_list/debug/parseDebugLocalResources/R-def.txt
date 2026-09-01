@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable mapa_sedes
+id btnDemoAlerta
+id btnDemoAvisos
+id btnLlamarSeleccionado
+id btnSafeStudent
+id mapView
+id spCategoria
+id spContacto
+id toolbarAlerta
+layout activity_alerta
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.SafeStudent
+style Theme.SafeStudent
+xml backup_rules
+xml data_extraction_rules
