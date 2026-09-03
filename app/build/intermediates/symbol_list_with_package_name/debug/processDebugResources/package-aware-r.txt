@@ -3061,6 +3061,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_search_black_24
+drawable icono_senati
 drawable m3_appbar_background
 drawable m3_avd_hide_password
 drawable m3_avd_show_password
@@ -3149,6 +3150,7 @@ drawable person
 drawable preference_list_divider_material
 drawable previous
 drawable round_navigation_white_48
+drawable senati_img_base
 drawable sharp_add_black_36
 drawable sharp_remove_black_36
 drawable test_level_drawable
@@ -3259,6 +3261,7 @@ id bounceStart
 id btnDemoAlerta
 id btnDemoAvisos
 id btnLlamarSeleccionado
+id btnMiUbicacion
 id btnSafeStudent
 id bubble_description
 id bubble_image
@@ -3388,6 +3391,8 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imgFlechaCiudadNueva
+id imgFlechaConoSur
 id immediateStop
 id included
 id indeterminate
@@ -3400,6 +3405,8 @@ id jumpToEnd
 id jumpToStart
 id labeled
 id layout
+id layoutIndicadorCiudadNueva
+id layoutIndicadorConoSur
 id left
 id leftToRight
 id legacy

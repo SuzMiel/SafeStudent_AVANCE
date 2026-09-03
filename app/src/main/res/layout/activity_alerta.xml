@@ -62,6 +62,7 @@
             android:textColor="#333333"
             android:layout_marginBottom="6dp" />
 
+        <!-- Contenedor con esquinas redondeadas para el mapa y el indicador -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -69,11 +70,93 @@
             app:cardCornerRadius="8dp"
             android:layout_marginBottom="12dp">
 
-            <!-- AQUÍ: Reemplazamos el ImageView por el MapView de OSMDroid -->
-            <org.osmdroid.views.MapView
-                android:id="@+id/mapView"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <!-- MapView de OSMDroid -->
+                <org.osmdroid.views.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- Cartel indicador dinámico por bordes -->
+                <LinearLayout
+                    android:id="@+id/layoutIndicadorConoSur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="#1B365D"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cono Sur"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:id="@+id/imgFlechaConoSur"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@android:drawable/arrow_up_float"
+                        app:tint="@android:color/white" />
+                </LinearLayout>
+
+                <!-- Indicador 2: Senati Ciudad Nueva -->
+                <LinearLayout
+                    android:id="@+id/layoutIndicadorCiudadNueva"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="#D32F2F"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ciudad Nueva"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:id="@+id/imgFlechaCiudadNueva"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@android:drawable/arrow_up_float"
+                        app:tint="@android:color/white" />
+                </LinearLayout>
+
+                <!-- Botón flotante para centrar en mi ubicación -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnMiUbicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="Mi Ubicación"
+                    app:backgroundTint="@android:color/white"
+                    app:fabSize="mini"
+                    app:srcCompat="@android:drawable/ic_menu_mylocation"
+                    app:tint="#1B365D" />
+
+            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
 
