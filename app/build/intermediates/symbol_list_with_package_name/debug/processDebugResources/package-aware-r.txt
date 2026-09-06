@@ -3020,6 +3020,8 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable avd_hide_password
 drawable avd_show_password
+drawable bg_boton_llamada
+drawable bg_spinner_moderno
 drawable bonuspack_bubble
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
@@ -3060,6 +3062,7 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_safestudent
 drawable ic_search_black_24
 drawable icono_senati
 drawable m3_appbar_background
@@ -3150,6 +3153,7 @@ drawable person
 drawable preference_list_divider_material
 drawable previous
 drawable round_navigation_white_48
+drawable safe_student
 drawable senati_img_base
 drawable sharp_add_black_36
 drawable sharp_remove_black_36
@@ -3262,7 +3266,11 @@ id btnDemoAlerta
 id btnDemoAvisos
 id btnLlamarSeleccionado
 id btnMiUbicacion
+id btnNavDirectorio
+id btnNavMapa
 id btnSafeStudent
+id btnTabApoyo
+id btnTabEmergencia
 id bubble_description
 id bubble_image
 id bubble_moreinfo
@@ -3677,6 +3685,8 @@ id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
+id vistaDirectorio
+id vistaMapa
 id west
 id withText
 id with_icon

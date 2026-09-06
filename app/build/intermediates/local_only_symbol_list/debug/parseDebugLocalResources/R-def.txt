@@ -2,16 +2,24 @@ R_DEF: Internal format may change without notice
 local
 color black
 color white
+drawable bg_boton_llamada
+drawable bg_spinner_moderno
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_safestudent
 drawable icono_senati
 drawable mapa_sedes
+drawable safe_student
 drawable senati_img_base
 id btnDemoAlerta
 id btnDemoAvisos
 id btnLlamarSeleccionado
 id btnMiUbicacion
+id btnNavDirectorio
+id btnNavMapa
 id btnSafeStudent
+id btnTabApoyo
+id btnTabEmergencia
 id imgFlechaCiudadNueva
 id imgFlechaConoSur
 id layoutIndicadorCiudadNueva
@@ -20,6 +28,8 @@ id mapView
 id spCategoria
 id spContacto
 id toolbarAlerta
+id vistaDirectorio
+id vistaMapa
 layout activity_alerta
 layout activity_main
 mipmap ic_launcher
