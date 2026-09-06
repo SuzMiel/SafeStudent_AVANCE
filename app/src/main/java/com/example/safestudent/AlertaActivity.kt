@@ -41,10 +41,8 @@ class AlertaActivity : AppCompatActivity() {
         const val PERMISSION_REQUEST_CODE = 1001
         const val GPS_PERMISSION_REQUEST_CODE = 1002
 
-        // Coordenadas reales de ambas sedes en Tacna
         val PUNTO_SENATI_CONO_SUR = GeoPoint(-18.038986086579403, -70.24926287883561)
         val PUNTO_SENATI_CIUDAD_NUEVA = GeoPoint(-17.988288656479437, -70.23784914151942)
-
         val PUNTO_INICIAL = GeoPoint(-18.03760570289263, -70.25071864765032)
     }
 
@@ -54,11 +52,21 @@ class AlertaActivity : AppCompatActivity() {
     private lateinit var spContacto: Spinner
     private lateinit var miUbicacionOverlay: MyLocationNewOverlay
 
-    // Indicadores para Cono Sur
+    // Contenedores de vistas principales
+    private lateinit var vistaMapa: LinearLayout
+    private lateinit var vistaDirectorio: LinearLayout
+
+    // Botones de navegación inferior
+    private lateinit var btnNavMapa: Button
+    private lateinit var btnNavDirectorio: Button
+
+    // Botones de categoría dentro del directorio
+    private lateinit var btnTabEmergencia: Button
+    private lateinit var btnTabApoyo: Button
+
+    // Indicadores para Cono Sur y Ciudad Nueva
     private lateinit var layoutIndicadorConoSur: LinearLayout
     private lateinit var imgFlechaConoSur: ImageView
-
-    // Indicadores para Ciudad Nueva
     private lateinit var layoutIndicadorCiudadNueva: LinearLayout
     private lateinit var imgFlechaCiudadNueva: ImageView
 
@@ -73,6 +81,15 @@ class AlertaActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbarAlerta)
         map = findViewById(R.id.mapView)
+
+        // Referencias de contenedores y navegación
+        vistaMapa = findViewById(R.id.vistaMapa)
+        vistaDirectorio = findViewById(R.id.vistaDirectorio)
+        btnNavMapa = findViewById(R.id.btnNavMapa)
+        btnNavDirectorio = findViewById(R.id.btnNavDirectorio)
+
+        btnTabEmergencia = findViewById(R.id.btnTabEmergencia)
+        btnTabApoyo = findViewById(R.id.btnTabApoyo)
 
         layoutIndicadorConoSur = findViewById(R.id.layoutIndicadorConoSur)
         imgFlechaConoSur = findViewById(R.id.imgFlechaConoSur)
@@ -90,6 +107,8 @@ class AlertaActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
 
+        configurarNavegacionInferior()
+        configurarPestañasDirectorio(spCategoria)
         configurarMapa()
         configurarUbicacionLocal()
         configurarSpinners(spCategoria)
@@ -98,6 +117,44 @@ class AlertaActivity : AppCompatActivity() {
 
         crearCanalNotificaciones()
         verificarPermisoNotificaciones()
+    }
+
+    private fun configurarNavegacionInferior() {
+        btnNavMapa.setOnClickListener {
+            vistaMapa.visibility = View.VISIBLE
+            vistaDirectorio.visibility = View.GONE
+            btnNavMapa.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            btnNavDirectorio.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+        }
+
+        btnNavDirectorio.setOnClickListener {
+            vistaMapa.visibility = View.GONE
+            vistaDirectorio.visibility = View.VISIBLE
+            btnNavDirectorio.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            btnNavMapa.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+        }
+    }
+
+    private fun configurarPestañasDirectorio(spCategoria: Spinner) {
+        btnTabEmergencia.setOnClickListener {
+            btnTabEmergencia.setBackgroundColor(android.graphics.Color.parseColor("#1B365D"))
+            btnTabEmergencia.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            btnTabApoyo.setBackgroundColor(android.graphics.Color.parseColor("#E0E0E0"))
+            btnTabApoyo.setTextColor(android.graphics.Color.parseColor("#1B365D"))
+
+            spCategoria.setSelection(0)
+            viewModel.cargarContactosPorCategoria("Emergencias")
+        }
+
+        btnTabApoyo.setOnClickListener {
+            btnTabApoyo.setBackgroundColor(android.graphics.Color.parseColor("#1B365D"))
+            btnTabApoyo.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+            btnTabEmergencia.setBackgroundColor(android.graphics.Color.parseColor("#E0E0E0"))
+            btnTabEmergencia.setTextColor(android.graphics.Color.parseColor("#1B365D"))
+
+            spCategoria.setSelection(1)
+            viewModel.cargarContactosPorCategoria("Apoyo Estudiantil")
+        }
     }
 
     private fun configurarMapa() {
@@ -118,7 +175,6 @@ class AlertaActivity : AppCompatActivity() {
 
         val originalIcon = ContextCompat.getDrawable(this, R.drawable.icono_senati)
 
-        // 1. Marcador Sede Cono Sur
         val markerCs = Marker(map).apply {
             position = PUNTO_SENATI_CONO_SUR
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -128,7 +184,6 @@ class AlertaActivity : AppCompatActivity() {
         }
         map.overlays.add(markerCs)
 
-        // 2. Marcador Sede Ciudad Nueva
         val markerCn = Marker(map).apply {
             position = PUNTO_SENATI_CIUDAD_NUEVA
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -138,7 +193,6 @@ class AlertaActivity : AppCompatActivity() {
         }
         map.overlays.add(markerCn)
 
-        // Al tocar cada cartel, viaja hacia la sede correspondiente
         layoutIndicadorConoSur.setOnClickListener {
             map.controller.animateTo(PUNTO_SENATI_CONO_SUR)
         }
@@ -161,7 +215,6 @@ class AlertaActivity : AppCompatActivity() {
     }
 
     private fun actualizarAmbosIndicadores() {
-        // Actualiza individualmente el cartel de cada sede
         posicionarCartelEnBorde(PUNTO_SENATI_CONO_SUR, layoutIndicadorConoSur, imgFlechaConoSur)
         posicionarCartelEnBorde(PUNTO_SENATI_CIUDAD_NUEVA, layoutIndicadorCiudadNueva, imgFlechaCiudadNueva)
     }
@@ -201,7 +254,6 @@ class AlertaActivity : AppCompatActivity() {
             cartel.x = centroX + (dx * scale) - (viewW / 2f)
             cartel.y = centroY + (dy * scale) - (viewH / 2f)
 
-            // Rota la flecha hacia el punto correspondiente
             val anguloRad = atan2(dy.toDouble(), dx.toDouble())
             flecha.rotation = Math.toDegrees(anguloRad).toFloat() + 90f
         }

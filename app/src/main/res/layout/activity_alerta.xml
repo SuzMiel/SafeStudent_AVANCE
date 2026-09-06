@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
+    <!-- Toolbar con título y botones demo -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarAlerta"
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
             <Button
                 android:id="@+id/btnDemoAvisos"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="AVISOS"
                 android:textSize="10sp"
                 android:textColor="@android:color/white"
@@ -37,7 +38,7 @@
             <Button
                 android:id="@+id/btnDemoAlerta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="ALERTA"
                 android:textSize="10sp"
                 android:textColor="@android:color/white"
@@ -48,156 +49,243 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
+    <!-- Contenedor dinámico central -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mapa de Sedes Tacna:"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:layout_marginBottom="6dp" />
-
-        <!-- Contenedor con esquinas redondeadas para el mapa y el indicador -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="8dp"
-            android:layout_marginBottom="12dp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- MapView de OSMDroid -->
-                <org.osmdroid.views.MapView
-                    android:id="@+id/mapView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <!-- Cartel indicador dinámico por bordes -->
-                <LinearLayout
-                    android:id="@+id/layoutIndicadorConoSur"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="#1B365D"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cono Sur"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:id="@+id/imgFlechaConoSur"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/arrow_up_float"
-                        app:tint="@android:color/white" />
-                </LinearLayout>
-
-                <!-- Indicador 2: Senati Ciudad Nueva -->
-                <LinearLayout
-                    android:id="@+id/layoutIndicadorCiudadNueva"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="#D32F2F"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ciudad Nueva"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:id="@+id/imgFlechaCiudadNueva"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/arrow_up_float"
-                        app:tint="@android:color/white" />
-                </LinearLayout>
-
-                <!-- Botón flotante para centrar en mi ubicación -->
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btnMiUbicacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="Mi Ubicación"
-                    app:backgroundTint="@android:color/white"
-                    app:fabSize="mini"
-                    app:srcCompat="@android:drawable/ic_menu_mylocation"
-                    app:tint="#1B365D" />
-
-            </FrameLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Directorio y Contacto Rapido:"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:layout_marginBottom="4dp" />
-
+        <!-- VISTA 1: CONTENEDOR DEL MAPA -->
         <LinearLayout
+            android:id="@+id/vistaMapa"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="6dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mapa de Sedes Tacna:"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <org.osmdroid.views.MapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <!-- Cartel Cono Sur -->
+                    <LinearLayout
+                        android:id="@+id/layoutIndicadorConoSur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="#1B365D"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cono Sur"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="11sp"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:id="@+id/imgFlechaConoSur"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@android:drawable/arrow_up_float"
+                            app:tint="@android:color/white" />
+                    </LinearLayout>
+
+                    <!-- Cartel Ciudad Nueva -->
+                    <LinearLayout
+                        android:id="@+id/layoutIndicadorCiudadNueva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="#D32F2F"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ciudad Nueva"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="11sp"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:id="@+id/imgFlechaCiudadNueva"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@android:drawable/arrow_up_float"
+                            app:tint="@android:color/white" />
+                    </LinearLayout>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btnMiUbicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:contentDescription="Mi Ubicación"
+                        app:backgroundTint="@android:color/white"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_mylocation"
+                        app:tint="#1B365D" />
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- VISTA 2: CONTENEDOR DEL DIRECTORIO Y CONTACTOS -->
+        <LinearLayout
+            android:id="@+id/vistaDirectorio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecciona Categoría:"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Pestañas/Botones Superiores de Categoría -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <Button
+                    android:id="@+id/btnTabEmergencia"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="EMERGENCIA"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#1B365D"
+                    android:layout_marginEnd="4dp"
+                    app:cornerRadius="6dp" />
+
+                <Button
+                    android:id="@+id/btnTabApoyo"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="APOYO ESTUDIANTIL"
+                    android:textStyle="bold"
+                    android:textColor="#1B365D"
+                    android:backgroundTint="#E0E0E0"
+                    android:layout_marginStart="4dp"
+                    app:cornerRadius="6dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contacto Seleccionado:"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="6dp" />
+
+            <!-- Spinner oculto para sincronía con el ViewModel -->
             <Spinner
                 android:id="@+id/spCategoria"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@android:drawable/btn_dropdown" />
+                android:layout_height="0dp"
+                android:visibility="invisible" />
 
+            <!-- Selector de Contacto -->
             <Spinner
                 android:id="@+id/spContacto"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_weight="1.2"
-                android:background="@android:drawable/btn_dropdown" />
+                android:background="@drawable/bg_spinner_moderno"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Botón de llamada -->
+            <Button
+                android:id="@+id/btnLlamarSeleccionado"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="REALIZAR LLAMADA DE CONTACTO"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="@drawable/bg_boton_llamada"
+                app:backgroundTint="@null" />
+
         </LinearLayout>
 
+    </FrameLayout>
+
+    <!-- BARRA INFERIOR DE NAVEGACIÓN -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="#1B365D"
+        android:gravity="center">
+
         <Button
-            android:id="@+id/btnLlamarSeleccionado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Realizar Llamada de Contacto"
-            android:backgroundTint="#1B365D"
-            android:textColor="@android:color/white" />
+            android:id="@+id/btnNavMapa"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="MAPA"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/transparent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="#3A5A8C" />
+
+        <Button
+            android:id="@+id/btnNavDirectorio"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="DIRECTORIO"
+            android:textStyle="bold"
+            android:textColor="#B0BEC5"
+            android:backgroundTint="@android:color/transparent" />
 
     </LinearLayout>
+
 </LinearLayout>
