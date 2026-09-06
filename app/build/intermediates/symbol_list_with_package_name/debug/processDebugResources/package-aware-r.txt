@@ -3264,7 +3264,6 @@ id bounceEnd
 id bounceStart
 id btnDemoAlerta
 id btnDemoAvisos
-id btnLlamarSeleccionado
 id btnMiUbicacion
 id btnNavDirectorio
 id btnNavMapa
@@ -3280,6 +3279,10 @@ id buttonPanel
 id cache_measures
 id callMeasure
 id cancel_button
+id cardClinicas
+id cardContacto1
+id cardContacto2
+id cardContacto3
 id carryVelocity
 id center
 id centerCrop
@@ -3597,8 +3600,6 @@ id snackbar_text
 id snap
 id snapMargins
 id south
-id spCategoria
-id spContacto
 id spacer
 id special_effects_controller_view_tag
 id spinner
@@ -3671,6 +3672,12 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id txtNombre1
+id txtNombre2
+id txtNombre3
+id txtNumero1
+id txtNumero2
+id txtNumero3
 id unchecked
 id uniform
 id unlabeled

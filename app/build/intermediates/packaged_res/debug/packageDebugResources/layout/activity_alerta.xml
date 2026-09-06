@@ -6,13 +6,14 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Toolbar con título y botones demo -->
+    <!-- Toolbar con título, flecha blanca y botones demo -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarAlerta"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#1B365D"
         app:navigationIcon="?attr/homeAsUpIndicator"
+        app:navigationIconTint="@android:color/white"
         app:title="SafeStudent"
         app:titleTextColor="@android:color/white">
 
@@ -54,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="12dp">
+        android:padding="16dp">
 
         <!-- VISTA 1: CONTENEDOR DEL MAPA -->
         <LinearLayout
@@ -181,7 +182,7 @@
                 android:textColor="#333333"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Pestañas/Botones Superiores de Categoría -->
+            <!-- Pestañas Superiores de Categoría corregidas -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,63 +192,248 @@
                 <Button
                     android:id="@+id/btnTabEmergencia"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="46dp"
                     android:layout_weight="1"
                     android:text="EMERGENCIA"
                     android:textStyle="bold"
+                    android:textSize="11sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="#1B365D"
                     android:layout_marginEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     app:cornerRadius="6dp" />
 
                 <Button
                     android:id="@+id/btnTabApoyo"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="46dp"
                     android:layout_weight="1"
                     android:text="APOYO ESTUDIANTIL"
                     android:textStyle="bold"
+                    android:textSize="11sp"
                     android:textColor="#1B365D"
                     android:backgroundTint="#E0E0E0"
                     android:layout_marginStart="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     app:cornerRadius="6dp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contacto Seleccionado:"
+                android:text="Contactos Disponibles:"
                 android:textStyle="bold"
                 android:textColor="#333333"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginBottom="10dp" />
 
-            <!-- Spinner oculto para sincronía con el ViewModel -->
-            <Spinner
-                android:id="@+id/spCategoria"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="invisible" />
-
-            <!-- Selector de Contacto -->
-            <Spinner
-                android:id="@+id/spContacto"
+            <!-- TARJETAS MINIMALISTAS DE CONTACTOS -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardContacto1"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_spinner_moderno"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
-            <!-- Botón de llamada -->
-            <Button
-                android:id="@+id/btnLlamarSeleccionado"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_call"
+                        app:tint="#1B365D"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNombre1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre Contacto"
+                            android:textStyle="bold"
+                            android:textColor="#222222"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtNumero1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="000000000"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardContacto2"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:text="REALIZAR LLAMADA DE CONTACTO"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:background="@drawable/bg_boton_llamada"
-                app:backgroundTint="@null" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_call"
+                        app:tint="#1B365D"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNombre2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre Contacto"
+                            android:textStyle="bold"
+                            android:textColor="#222222"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtNumero2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="000000000"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardContacto3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_call"
+                        app:tint="#1B365D"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNombre3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre Contacto"
+                            android:textStyle="bold"
+                            android:textColor="#222222"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtNumero3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="000000000"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Tarjeta especial para Clínicas -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardClinicas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="#F1F8F5"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_info_details"
+                        app:tint="#2E6F40"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Clínicas Asociadas"
+                            android:textStyle="bold"
+                            android:textColor="#2E6F40"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Toca para ver opciones (La Luz, Isabel, Promedic)"
+                            android:textColor="#555555"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

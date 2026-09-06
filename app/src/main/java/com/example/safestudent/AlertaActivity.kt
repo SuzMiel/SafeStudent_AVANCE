@@ -18,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -49,26 +50,35 @@ class AlertaActivity : AppCompatActivity() {
     private val viewModel: AlertaViewModel by viewModels()
 
     private lateinit var map: MapView
-    private lateinit var spContacto: Spinner
     private lateinit var miUbicacionOverlay: MyLocationNewOverlay
 
-    // Contenedores de vistas principales
     private lateinit var vistaMapa: LinearLayout
     private lateinit var vistaDirectorio: LinearLayout
 
-    // Botones de navegación inferior
     private lateinit var btnNavMapa: Button
     private lateinit var btnNavDirectorio: Button
 
-    // Botones de categoría dentro del directorio
     private lateinit var btnTabEmergencia: Button
     private lateinit var btnTabApoyo: Button
 
-    // Indicadores para Cono Sur y Ciudad Nueva
+    private lateinit var cardContacto1: CardView
+    private lateinit var cardContacto2: CardView
+    private lateinit var cardContacto3: CardView
+    private lateinit var cardClinicas: CardView
+
+    private lateinit var txtNombre1: TextView
+    private lateinit var txtNumero1: TextView
+    private lateinit var txtNombre2: TextView
+    private lateinit var txtNumero2: TextView
+    private lateinit var txtNombre3: TextView
+    private lateinit var txtNumero3: TextView
+
     private lateinit var layoutIndicadorConoSur: LinearLayout
     private lateinit var imgFlechaConoSur: ImageView
     private lateinit var layoutIndicadorCiudadNueva: LinearLayout
     private lateinit var imgFlechaCiudadNueva: ImageView
+
+    private var listaContactosActuales = listOf<ContactoEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,9 +90,8 @@ class AlertaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_alerta)
 
         val toolbar: Toolbar = findViewById(R.id.toolbarAlerta)
-        map = findViewById(R.id.mapView)
+        toolbar.navigationIcon?.mutate()?.setTint(ContextCompat.getColor(this, android.R.color.white))
 
-        // Referencias de contenedores y navegación
         vistaMapa = findViewById(R.id.vistaMapa)
         vistaDirectorio = findViewById(R.id.vistaDirectorio)
         btnNavMapa = findViewById(R.id.btnNavMapa)
@@ -90,6 +99,18 @@ class AlertaActivity : AppCompatActivity() {
 
         btnTabEmergencia = findViewById(R.id.btnTabEmergencia)
         btnTabApoyo = findViewById(R.id.btnTabApoyo)
+
+        cardContacto1 = findViewById(R.id.cardContacto1)
+        cardContacto2 = findViewById(R.id.cardContacto2)
+        cardContacto3 = findViewById(R.id.cardContacto3)
+        cardClinicas = findViewById(R.id.cardClinicas)
+
+        txtNombre1 = findViewById(R.id.txtNombre1)
+        txtNumero1 = findViewById(R.id.txtNumero1)
+        txtNombre2 = findViewById(R.id.txtNombre2)
+        txtNumero2 = findViewById(R.id.txtNumero2)
+        txtNombre3 = findViewById(R.id.txtNombre3)
+        txtNumero3 = findViewById(R.id.txtNumero3)
 
         layoutIndicadorConoSur = findViewById(R.id.layoutIndicadorConoSur)
         imgFlechaConoSur = findViewById(R.id.imgFlechaConoSur)
@@ -99,24 +120,23 @@ class AlertaActivity : AppCompatActivity() {
 
         val btnDemoAvisos: Button = findViewById(R.id.btnDemoAvisos)
         val btnDemoAlerta: Button = findViewById(R.id.btnDemoAlerta)
-        val btnLlamar: Button = findViewById(R.id.btnLlamarSeleccionado)
-        val spCategoria: Spinner = findViewById(R.id.spCategoria)
-        spContacto = findViewById(R.id.spContacto)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
 
         configurarNavegacionInferior()
-        configurarPestañasDirectorio(spCategoria)
+        configurarPestañasDirectorio()
+        configurarAccionesTarjetas()
         configurarMapa()
         configurarUbicacionLocal()
-        configurarSpinners(spCategoria)
-        configurarBotones(btnDemoAvisos, btnDemoAlerta, btnLlamar)
+        configurarBotonesDemo(btnDemoAvisos, btnDemoAlerta)
         observarViewModel()
 
         crearCanalNotificaciones()
         verificarPermisoNotificaciones()
+
+        viewModel.cargarContactosPorCategoria("Emergencias")
     }
 
     private fun configurarNavegacionInferior() {
@@ -135,14 +155,14 @@ class AlertaActivity : AppCompatActivity() {
         }
     }
 
-    private fun configurarPestañasDirectorio(spCategoria: Spinner) {
+    private fun configurarPestañasDirectorio() {
         btnTabEmergencia.setOnClickListener {
             btnTabEmergencia.setBackgroundColor(android.graphics.Color.parseColor("#1B365D"))
             btnTabEmergencia.setTextColor(ContextCompat.getColor(this, android.R.color.white))
             btnTabApoyo.setBackgroundColor(android.graphics.Color.parseColor("#E0E0E0"))
             btnTabApoyo.setTextColor(android.graphics.Color.parseColor("#1B365D"))
 
-            spCategoria.setSelection(0)
+            cardClinicas.visibility = View.VISIBLE
             viewModel.cargarContactosPorCategoria("Emergencias")
         }
 
@@ -152,12 +172,118 @@ class AlertaActivity : AppCompatActivity() {
             btnTabEmergencia.setBackgroundColor(android.graphics.Color.parseColor("#E0E0E0"))
             btnTabEmergencia.setTextColor(android.graphics.Color.parseColor("#1B365D"))
 
-            spCategoria.setSelection(1)
+            cardClinicas.visibility = View.GONE
             viewModel.cargarContactosPorCategoria("Apoyo Estudiantil")
         }
     }
 
+    private fun configurarAccionesTarjetas() {
+        cardContacto1.setOnClickListener {
+            if (listaContactosActuales.isNotEmpty()) {
+                mostrarDialogoConfirmacion(listaContactosActuales[0].nombre, listaContactosActuales[0].numero)
+            }
+        }
+
+        cardContacto2.setOnClickListener {
+            if (listaContactosActuales.size > 1) {
+                mostrarDialogoConfirmacion(listaContactosActuales[1].nombre, listaContactosActuales[1].numero)
+            }
+        }
+
+        cardContacto3.setOnClickListener {
+            if (listaContactosActuales.size > 2) {
+                mostrarDialogoConfirmacion(listaContactosActuales[2].nombre, listaContactosActuales[2].numero)
+            }
+        }
+
+        cardClinicas.setOnClickListener {
+            val nombresClinicas = arrayOf(
+                "Clínica La Luz ((052) 638720)",
+                "Clínica Isabel ((052) 242401)",
+                "Clínica Promedic ((052) 427239)"
+            )
+            val numerosClinicas = arrayOf("052638720", "052242401", "052427239")
+
+            AlertDialog.Builder(this)
+                .setTitle("Clínicas Asociadas en Tacna")
+                .setItems(nombresClinicas) { _, which ->
+                    mostrarDialogoConfirmacion(nombresClinicas[which], numerosClinicas[which])
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
+    }
+
+    private fun mostrarDialogoConfirmacion(nombre: String, numero: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Confirmar Llamada")
+            .setMessage("¿Deseas realizar una llamada a $nombre ($numero)?")
+            .setPositiveButton("LLAMAR") { _, _ ->
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$numero")
+                }
+                startActivity(intent)
+            }
+            .setNegativeButton("CANCELAR", null)
+            .show()
+    }
+
+    private fun observarViewModel() {
+        viewModel.aviso.observe(this) { aviso ->
+            lanzarNotificacionHeadsUp(aviso.titulo, aviso.detalle)
+        }
+
+        viewModel.alerta.observe(this) { alerta ->
+            AlertDialog.Builder(this)
+                .setTitle(alerta.titulo)
+                .setMessage(alerta.detalle)
+                .setPositiveButton("ENTENDIDO") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+
+        viewModel.contactosActuales.observe(this) { contactos ->
+            listaContactosActuales = contactos
+
+            if (contactos.isNotEmpty()) {
+                txtNombre1.text = limpiarNombre(contactos[0].nombre)
+                txtNumero1.text = contactos[0].numero
+                cardContacto1.visibility = View.VISIBLE
+            } else {
+                cardContacto1.visibility = View.GONE
+            }
+
+            if (contactos.size > 1) {
+                txtNombre2.text = limpiarNombre(contactos[1].nombre)
+                txtNumero2.text = contactos[1].numero
+                cardContacto2.visibility = View.VISIBLE
+            } else {
+                cardContacto2.visibility = View.GONE
+            }
+
+            if (contactos.size > 2) {
+                txtNombre3.text = limpiarNombre(contactos[2].nombre)
+                txtNumero3.text = contactos[2].numero
+                cardContacto3.visibility = View.VISIBLE
+            } else {
+                cardContacto3.visibility = View.GONE
+            }
+        }
+    }
+
+    // Función auxiliar para quitar los paréntesis con números si ya vienen incluidos en el nombre (ej. "Bomberos (116)" -> "Bomberos")
+    private fun limpiarNombre(nombreCompleto: String): String {
+        val index = nombreCompleto.indexOf("(")
+        return if (index != -1) {
+            nombreCompleto.substring(0, index).trim()
+        } else {
+            nombreCompleto
+        }
+    }
+
     private fun configurarMapa() {
+        map = findViewById(R.id.mapView)
         val osmTileSource = XYTileSource(
             "OSMFR", 0, 19, 256, ".png",
             arrayOf(
@@ -313,67 +439,13 @@ class AlertaActivity : AppCompatActivity() {
         }
     }
 
-    private fun configurarSpinners(spCategoria: Spinner) {
-        val categorias = arrayOf("Emergencias", "Apoyo Estudiantil")
-        spCategoria.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categorias)
-
-        spCategoria.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.cargarContactosPorCategoria(categorias[position])
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        spContacto.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val listaActual = viewModel.contactosActuales.value
-                if (!listaActual.isNullOrEmpty() && position in listaActual.indices) {
-                    viewModel.numeroSeleccionado = listaActual[position].numero
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-    }
-
-    private fun configurarBotones(btnAvisos: Button, btnAlerta: Button, btnLlamar: Button) {
+    private fun configurarBotonesDemo(btnAvisos: Button, btnAlerta: Button) {
         btnAvisos.setOnClickListener {
             viewModel.generarAvisoAleatorio()
         }
 
         btnAlerta.setOnClickListener {
             viewModel.generarAlertaAleatoria()
-        }
-
-        btnLlamar.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL).apply {
-                data = Uri.parse("tel:${viewModel.numeroSeleccionado}")
-            }
-            startActivity(intent)
-        }
-    }
-
-    private fun observarViewModel() {
-        viewModel.aviso.observe(this) { aviso ->
-            lanzarNotificacionHeadsUp(aviso.titulo, aviso.detalle)
-        }
-
-        viewModel.alerta.observe(this) { alerta ->
-            AlertDialog.Builder(this)
-                .setTitle(alerta.titulo)
-                .setMessage(alerta.detalle)
-                .setPositiveButton("ENTENDIDO") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
-
-        viewModel.contactosActuales.observe(this) { contactos ->
-            val nombres = contactos.map { it.nombre }
-            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, nombres)
-            spContacto.adapter = adapter
-            if (contactos.isNotEmpty()) {
-                viewModel.numeroSeleccionado = contactos[0].numero
-            }
         }
     }
 
