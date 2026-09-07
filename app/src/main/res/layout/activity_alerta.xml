@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Toolbar con título, flecha blanca y botones demo -->
+    <!-- Toolbar con título, flecha blanca y botones demo invisibles/transparentes para exposición -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarAlerta"
         android:layout_width="match_parent"
@@ -34,7 +34,10 @@
                 android:backgroundTint="#2E6F40"
                 android:layout_marginEnd="4dp"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                android:paddingEnd="8dp"
+                android:alpha="0.0"
+                android:clickable="true"
+                android:focusable="true" />
 
             <Button
                 android:id="@+id/btnDemoAlerta"
@@ -45,7 +48,10 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="#B71C1C"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                android:paddingEnd="8dp"
+                android:alpha="0.0"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -162,6 +168,64 @@
                         app:srcCompat="@android:drawable/ic_menu_mylocation"
                         app:tint="#1B365D" />
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardInfoSenati"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="12dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="6dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/txtTituloInfoSenati"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Sede SENATI"
+                                    android:textColor="#1B365D"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/btnCerrarInfoSenati"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                                    app:tint="#888888" />
+                            </LinearLayout>
+
+                            <!-- TEXTO DEL CUADRO -->
+                            <TextView
+                                android:id="@+id/txtDetalleInfoSenati"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:lineSpacingExtra="2dp"
+                                android:text="Aquí aparecerá la información detallada."
+                                android:textColor="#444444"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
                 </FrameLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -182,7 +246,7 @@
                 android:textColor="#333333"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Pestañas Superiores de Categoría corregidas -->
+            <!-- Pestañas Superiores de Categoría -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

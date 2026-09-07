@@ -33,6 +33,10 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.abs
 import kotlin.math.atan2
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import org.osmdroid.views.overlay.Polygon
+import org.osmdroid.views.overlay.infowindow.BasicInfoWindow
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AlertaActivity : AppCompatActivity() {
@@ -46,6 +50,11 @@ class AlertaActivity : AppCompatActivity() {
         val PUNTO_SENATI_CIUDAD_NUEVA = GeoPoint(-17.988288656479437, -70.23784914151942)
         val PUNTO_INICIAL = GeoPoint(-18.03760570289263, -70.25071864765032)
     }
+
+    private lateinit var cardInfoSenati: CardView
+    private lateinit var txtTituloInfoSenati: TextView
+    private lateinit var txtDetalleInfoSenati: TextView
+    private lateinit var btnCerrarInfoSenati: ImageView
 
     private val viewModel: AlertaViewModel by viewModels()
 
@@ -120,6 +129,15 @@ class AlertaActivity : AppCompatActivity() {
 
         val btnDemoAvisos: Button = findViewById(R.id.btnDemoAvisos)
         val btnDemoAlerta: Button = findViewById(R.id.btnDemoAlerta)
+
+        cardInfoSenati = findViewById(R.id.cardInfoSenati)
+        txtTituloInfoSenati = findViewById(R.id.txtTituloInfoSenati)
+        txtDetalleInfoSenati = findViewById(R.id.txtDetalleInfoSenati)
+        btnCerrarInfoSenati = findViewById(R.id.btnCerrarInfoSenati)
+
+        btnCerrarInfoSenati.setOnClickListener {
+            cardInfoSenati.visibility = View.GONE
+        }
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -272,7 +290,6 @@ class AlertaActivity : AppCompatActivity() {
         }
     }
 
-    // Función auxiliar para quitar los paréntesis con números si ya vienen incluidos en el nombre (ej. "Bomberos (116)" -> "Bomberos")
     private fun limpiarNombre(nombreCompleto: String): String {
         val index = nombreCompleto.indexOf("(")
         return if (index != -1) {
@@ -301,24 +318,112 @@ class AlertaActivity : AppCompatActivity() {
 
         val originalIcon = ContextCompat.getDrawable(this, R.drawable.icono_senati)
 
+        // =========================================================
+        // 1. MARCADORES SENATI CON CUADRO BLANCO INFERIOR AL TOCAR
+        // =========================================================
         val markerCs = Marker(map).apply {
             position = PUNTO_SENATI_CONO_SUR
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            title = "SENATI Cono Sur"
-            snippet = "Campus Cono Sur"
             icon = redimensionarDrawable(originalIcon, 40, 24)
+            setOnMarkerClickListener { _, _ ->
+
+                txtTituloInfoSenati.text = "SENATI - Sede Cono Sur"
+                txtDetalleInfoSenati.text = "Buses con cobertura a la Sede:\nLinea 10-B\nLinea 14\nLinea 1\nLinea 15"
+
+                cardInfoSenati.visibility = View.VISIBLE
+                map.controller.animateTo(PUNTO_SENATI_CONO_SUR)
+                true
+            }
         }
         map.overlays.add(markerCs)
 
         val markerCn = Marker(map).apply {
             position = PUNTO_SENATI_CIUDAD_NUEVA
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            title = "SENATI Ciudad Nueva"
-            snippet = "Campus Principal Ciudad Nueva"
             icon = redimensionarDrawable(originalIcon, 40, 24)
+            setOnMarkerClickListener { _, _ ->
+
+                txtTituloInfoSenati.text = "SENATI - Sede Ciudad Nueva"
+                txtDetalleInfoSenati.text = "Buses con cobertura a la Sede:\nLinea 15\nLinea 202\nLinea 22\nLinea 1"
+
+                cardInfoSenati.visibility = View.VISIBLE
+                map.controller.animateTo(PUNTO_SENATI_CIUDAD_NUEVA)
+                true
+            }
         }
         map.overlays.add(markerCn)
 
+        // =========================================================
+        // 2. ZONAS ROJAS DE PELIGRO (CONO SUR Y CIUDAD NUEVA)
+        // =========================================================
+        val zonasPeligro = listOf(
+            // --- Zonas en Cono Sur ---
+            Triple(
+                "Zona Peligro - Av. Municipal",
+                "Reporte: Hurtos al paso y robos de celulares en horarios nocturnos.",
+                GeoPoint(-18.03810, -70.25140)
+            ),
+            Triple(
+                "Zona de Riesgo - Mariano Melgar",
+                "Reporte: Baja iluminación pública y reportes de arrebatos de mochilas.",
+                GeoPoint(-18.03980, -70.24830)
+            ),
+            Triple(
+                "Punto Crítico - Calle Zela",
+                "Reporte: Asaltos reportados en moto lineal durante fines de semana.",
+                GeoPoint(-18.03600, -70.24980)
+            ),
+
+            // --- Zonas en Ciudad Nueva ---
+            Triple(
+                "Zona Roja - Av. Internacional",
+                "Reporte: Robos al paso y presencia de personas sospechosas cerca a paraderos.",
+                GeoPoint(-17.98950, -70.23690)
+            ),
+            Triple(
+                "Punto Crítico - Plaza José Olaya",
+                "Reporte: Arrebatos de pertenencias y carteristas en horas punta.",
+                GeoPoint(-17.98680, -70.23880)
+            ),
+            Triple(
+                "Zona de Riesgo - Calle Mariano Necochea",
+                "Reporte: Poca visibilidad nocturna y calles desoladas al salir de clases.",
+                GeoPoint(-17.98740, -70.23560)
+            )
+        )
+
+        for (zona in zonasPeligro) {
+            // Marcador invisible para mostrar el globo de diálogo nativo
+            val markerCentro = Marker(map).apply {
+                position = zona.third
+                title = zona.first
+                snippet = zona.second
+                icon = ColorDrawable(Color.TRANSPARENT)
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                infoWindow = BasicInfoWindow(org.osmdroid.library.R.layout.bonuspack_bubble, map)
+            }
+            map.overlays.add(markerCentro)
+
+            // Círculo rojo semitransparente
+            val circuloRojo = Polygon(map).apply {
+                points = Polygon.pointsAsCircle(zona.third, 85.0) // 85 metros de radio
+                fillPaint.color = Color.argb(90, 244, 67, 54)     // Fondo rojo translúcido
+                outlinePaint.color = Color.argb(220, 183, 28, 28) // Borde rojo oscuro
+                outlinePaint.strokeWidth = 3.5f
+
+                setOnClickListener { _, _, _ ->
+                    cardInfoSenati.visibility = View.GONE // Cierra el cuadro blanco si estaba abierto
+                    markerCentro.showInfoWindow()
+                    map.controller.animateTo(zona.third)
+                    true
+                }
+            }
+            map.overlays.add(circuloRojo)
+        }
+
+        // =========================================================
+        // 3. CARTELES INDICADORES DE DIRECCIÓN
+        // =========================================================
         layoutIndicadorConoSur.setOnClickListener {
             map.controller.animateTo(PUNTO_SENATI_CONO_SUR)
         }
@@ -338,6 +443,8 @@ class AlertaActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        map.invalidate()
     }
 
     private fun actualizarAmbosIndicadores() {
@@ -471,7 +578,7 @@ class AlertaActivity : AppCompatActivity() {
 
     private fun lanzarNotificacionHeadsUp(titulo: String, mensaje: String) {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.stat_sys_warning)
+            .setSmallIcon(android.R.drawable.ic_menu_info_details)
             .setContentTitle(titulo)
             .setContentText(mensaje)
             .setStyle(NotificationCompat.BigTextStyle().bigText(mensaje))
@@ -501,6 +608,68 @@ class AlertaActivity : AppCompatActivity() {
         }
         val bitmapEscalado = Bitmap.createScaledBitmap(bitmap, anchoPx, altoPx, true)
         return BitmapDrawable(resources, bitmapEscalado)
+    }
+
+    // Modelo local en memoria (sin base de datos)
+    private data class ZonaPeligroLocal(
+        val titulo: String,
+        val descripcionCasos: String,
+        val centro: GeoPoint,
+        val radioMetros: Double
+    )
+
+    private fun agregarZonasDePeligroDirectas() {
+        // Lista fija en memoria con casos reportados en Tacna
+        val zonasEstaticas = listOf(
+            ZonaPeligroLocal(
+                titulo = "Zona Roja - Av. Municipal",
+                descripcionCasos = "• Asaltos a mano armada (20:00 - 23:00)\n• Robo de celulares y mochilas en paraderos",
+                centro = GeoPoint(-18.03810, -70.25140),
+                radioMetros = 90.0
+            ),
+            ZonaPeligroLocal(
+                titulo = "Zona de Riesgo - Mariano Melgar",
+                descripcionCasos = "• Poca iluminación pública\n• Hurtos recurrentes a estudiantes",
+                centro = GeoPoint(-18.03980, -70.24830),
+                radioMetros = 75.0
+            ),
+            ZonaPeligroLocal(
+                titulo = "Punto Crítico - Calle Zela",
+                descripcionCasos = "• Arrebatos al paso en moto lineal\n• Reportes frecuentes fines de semana",
+                centro = GeoPoint(-18.03600, -70.24980),
+                radioMetros = 80.0
+            )
+        )
+
+        for (zona in zonasEstaticas) {
+            // Marcador invisible en el centro para desplegar el cuadro de diálogo tipo bocadillo
+            val markerInfo = Marker(map).apply {
+                position = zona.centro
+                title = zona.titulo
+                snippet = zona.descripcionCasos
+                icon = ColorDrawable(Color.TRANSPARENT)
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                infoWindow = BasicInfoWindow(org.osmdroid.library.R.layout.bonuspack_bubble, map)
+            }
+            map.overlays.add(markerInfo)
+
+            // Círculo rojo semitransparente
+            val circulo = Polygon(map).apply {
+                points = Polygon.pointsAsCircle(zona.centro, zona.radioMetros)
+                fillPaint.color = Color.argb(90, 244, 67, 54)     // Relleno rojo translúcido
+                outlinePaint.color = Color.argb(220, 183, 28, 28) // Borde rojo fuerte
+                outlinePaint.strokeWidth = 3.5f
+
+                setOnClickListener { _, _, _ ->
+                    markerInfo.showInfoWindow()
+                    map.controller.animateTo(zona.centro)
+                    true
+                }
+            }
+            map.overlays.add(circulo)
+        }
+
+        map.invalidate()
     }
 
     override fun onResume() {
