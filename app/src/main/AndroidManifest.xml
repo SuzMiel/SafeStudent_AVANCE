@@ -10,16 +10,16 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="SafeStudent"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeStudent">
 
         <activity
-            android:name=".AlertaActivity"
+            android:name="com.example.safestudent.AlertaActivity"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.safestudent.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -30,8 +30,8 @@
 
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" /> //
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> //
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 

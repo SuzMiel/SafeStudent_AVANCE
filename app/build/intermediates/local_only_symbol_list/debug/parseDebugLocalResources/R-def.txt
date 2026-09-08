@@ -10,7 +10,7 @@ drawable ic_safestudent
 drawable icono_senati
 drawable mapa_sedes
 drawable safe_student
-drawable senati_img_base
+drawable senati
 id btnCerrarInfoSenati
 id btnDemoAlerta
 id btnDemoAvisos
@@ -44,6 +44,7 @@ id vistaMapa
 layout activity_alerta
 layout activity_main
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string app_name
 style Base.Theme.SafeStudent

@@ -3154,7 +3154,7 @@ drawable preference_list_divider_material
 drawable previous
 drawable round_navigation_white_48
 drawable safe_student
-drawable senati_img_base
+drawable senati
 drawable sharp_add_black_36
 drawable sharp_remove_black_36
 drawable test_level_drawable
@@ -3924,6 +3924,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
 string abc_action_bar_home_description

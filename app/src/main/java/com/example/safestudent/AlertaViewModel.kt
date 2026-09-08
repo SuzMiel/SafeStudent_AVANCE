@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-data class MensajeAlerta(val titulo: String, val detalle: String)
+data class MensajeAlerta(
+    val titulo: String,
+    val detalle: String
+)
 
 class AlertaViewModel(application: Application) : AndroidViewModel(application) {
 

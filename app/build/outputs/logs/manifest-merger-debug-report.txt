@@ -109,7 +109,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Sr
 	android:fullBackupContent
 		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:10:9-54
 	android:roundIcon
-		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:13:9-54
+		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:13:9-48
 	android:icon
 		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:11:9-43
 	android:allowBackup
@@ -123,7 +123,7 @@ ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\m
 	android:exported
 		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:19:13-37
 	android:name
-		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:18:13-43
+		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:18:13-66
 activity#com.example.safestudent.MainActivity
 ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:21:9-29:20
 	android:windowSoftInputMode
@@ -131,7 +131,7 @@ ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\m
 	android:exported
 		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:23:13-36
 	android:name
-		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:22:13-41
+		ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:22:13-64
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from C:\Users\Sr_Miyagi\AndroidStudioProjects\SafeStudent_AVANCE\app\src\main\AndroidManifest.xml:25:13-28:29
 action#android.intent.action.MAIN
